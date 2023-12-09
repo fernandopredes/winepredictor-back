@@ -6,15 +6,17 @@ import joblib
 import os
 
 def train_model():
-    # Carregar o conjunto de dados de vinhos
-    wine = load_wine()
-    dataset = pd.DataFrame(data=wine['data'], columns=wine['feature_names'])
+    # URL do data set
+    url = "https://raw.githubusercontent.com/fernandopredes/winepredictor-back/master/data/wine_dataset.csv"
+
+    # Carregar o dataset diretamente da URL
+    dataset = pd.read_csv(url)
 
     # Remover a coluna 'od280/od315_of_diluted_wines'
     dataset = dataset.drop(columns=['od280/od315_of_diluted_wines'], errors='ignore')
 
-    X = dataset  # Características (features) dos vinhos.
-    y = wine['target']  # Classes dos vinhos.
+    X = dataset.drop(columns=['target'])  # Características dos vinhos.
+    y = dataset['target']  # Classes dos vinhos.
 
 
     # Dividir os dados em conjuntos de treino e teste.
@@ -50,12 +52,11 @@ def predict_wine(input_data):
     model = load_model()
     prediction = model.predict(input_data)
     wine = load_wine()
-    predicted_class = wine['target_names'][prediction][0]
+    predicted_class_index = int(prediction[0])
+    predicted_class = wine['target_names'][predicted_class_index]
     return predicted_class
 
 if __name__ == '__main__':
-    # Se o script for executado diretamente, treinar o modelo e testar uma previsão.
     train_model()
     test_features = pd.DataFrame([[13.2, 1.78, 2.14, 11.2, 100, 2.65, 2.76, 0.26, 1.28, 4.38, 1.05, 3.40, 1050]],
                                  columns=load_wine()['feature_names'])
-    print(predict_wine(test_features))
