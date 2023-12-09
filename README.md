@@ -72,6 +72,3 @@ pytest
 - Pandas
 - scikit-learn
 
----
-
-Ajuste este README conforme necessário para incluir informações específicas do seu projeto, como novos endpoints, detalhes adicionais de configuração ou funcionalidades adicionais.
